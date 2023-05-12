@@ -3,9 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormControl, MenuItem, Select } from "@material-ui/core";
 import InfoBox from "./InfoBox";
+import { prettyPrintStat, sortData } from "./util/utils";
+import Map from "./Map";
+//https://react-leaflet.js.org/docs/start-installation/
+//https://yudhajitadhikary.medium.com/building-covid-19-tracker-using-react-dd6173d610d
 
 function App() {
-    const [loading, isLoading] = useState("false");
+    const [loading, setLoading] = useState(false);
     const [countries, setCountries] = useState([]);
     const [country, setCountry] = useState("worldwide");
     const [countryInfo, setCountryInfo] = useState({});
@@ -17,6 +21,7 @@ function App() {
     const [mapZoom, setMapZoom] = useState(3);
     const [mapCountries, setMapCountries] = useState([]);
     const [casesType, setCasesType] = useState("cases");
+    const [test, setTest] = useState([]);
 
     const BASE_COVID_URL = "https://disease.sh/v3/covid-19";
 
@@ -29,7 +34,7 @@ function App() {
 
     useEffect(() => {
         const getCountriesData = async () => {
-            isLoading(true);
+            setLoading(true);
             await axios
                 .get(`${BASE_COVID_URL}/countries`)
                 .then((res) => res.data)
@@ -38,17 +43,19 @@ function App() {
                         name: country.country,
                         value: country.countryInfo.iso2,
                     }));
-                    // const sortedData = sortData(data);
-                    // setTableData(sortedData);
+                    const sortedData = sortData(data);
+                    setTableData(sortedData);
                     setMapCountries(data);
                     setCountries(countries);
                 });
+            setLoading(false);
         };
         getCountriesData();
     }, []);
 
     const onCountryChange = async (event) => {
         const countryCode = event.target.value;
+        console.log(countryCode);
         setCountry(countryCode);
         const url =
             countryCode === "worldwide"
@@ -59,7 +66,7 @@ function App() {
             .then((data) => {
                 setCountry(countryCode);
                 setCountryInfo(data);
-                // setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+                setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
                 setMapZoom(4);
             });
     };
@@ -90,9 +97,31 @@ function App() {
                     active={casesType === "cases"}
                     onClick={(e) => setCasesType("cases")}
                     title='Coronavirus cases'
-                    total='5'
+                    total={prettyPrintStat(countryInfo.cases)}
+                ></InfoBox>
+                <InfoBox
+                    isRed={false}
+                    active={casesType === "recovered"}
+                    onClick={(e) => setCasesType("recovered")}
+                    title='recovered'
+                    total={prettyPrintStat(countryInfo.recovered)}
+                ></InfoBox>
+                <InfoBox
+                    isRed={true}
+                    active={casesType === "deaths"}
+                    onClick={(e) => setCasesType("deaths")}
+                    title='Deaths'
+                    total={prettyPrintStat(countryInfo.deaths)}
                 ></InfoBox>
             </div>
+
+            <Map
+                loading={loading}
+                casesType={casesType}
+                countries={mapCountries}
+                center={mapCenter}
+                zoom={mapZoom}
+            />
         </div>
     );
 }

@@ -10,15 +10,15 @@ import numeral from "numeral";
 const casesTypeColors = {
     cases: {
         hex: "#CC1034",
-        multiplier: 800,
+        multiplier: 100,
     },
     recovered: {
         hex: "#7dd71d",
-        multiplier: 1200,
+        multiplier: 200,
     },
     deaths: {
         hex: "#fb4443",
-        multiplier: 2000,
+        multiplier: 500,
     },
 };
 // console.log(typeof casesTypeColors["cases"].hex);
@@ -34,14 +34,21 @@ export const sortData = (data) => {
     return sortedData;
 };
 
+// data = countries prop from the map.
+
+//console.log(country[casesType]);
 export const showDataOnMap = (data, casesType = "cases") =>
     data.map((country, idx) => (
         <Circle
             key={idx}
             center={[country.countryInfo.lat, country.countryInfo.long]}
             fillOpacity={0.4}
-            pathOptions={{ color: "red" }}
-            radius={20}
+            color={casesTypeColors[casesType].hex}
+            fillColor={casesTypeColors[casesType].hex}
+            radius={
+                Math.sqrt(country[casesType]) *
+                casesTypeColors[casesType].multiplier
+            }
         >
             <Popup>
                 <div className='info-container'></div>
@@ -58,6 +65,7 @@ export const showDataOnMap = (data, casesType = "cases") =>
                     <div className='info-recovered'>
                         Recovered:{numeral(country.recovered).format("0,0")}
                     </div>
+
                     <div className='info-deaths'>
                         Deaths: {numeral(country.deaths).format("0,0")}
                     </div>

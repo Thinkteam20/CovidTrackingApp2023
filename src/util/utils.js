@@ -35,8 +35,8 @@ export const sortData = (data) => {
 };
 
 // data = countries prop from the map.
+//console.log(country[casesType]); // TEST countries data obj.
 
-//console.log(country[casesType]);
 export const showDataOnMap = (data, casesType = "cases") =>
     data.map((country, idx) => (
         <Circle

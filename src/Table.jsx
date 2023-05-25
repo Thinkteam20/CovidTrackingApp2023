@@ -5,14 +5,16 @@ import numeral from "numeral";
 export default function Table({ countries }) {
     return (
         <table className='table'>
-            {countries.map(({ country, cases }, idx) => (
-                <tr>
-                    <td>{country}</td>
-                    <td>
-                        <strong>{numeral(cases).format()}</strong>
-                    </td>
-                </tr>
-            ))}
+            <tbody>
+                {countries.map(({ country, cases }, idx) => (
+                    <tr key={idx}>
+                        <td>{country}</td>
+                        <td>
+                            <strong>{numeral(cases).format()}</strong>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
         </table>
     );
 }

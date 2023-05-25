@@ -7,18 +7,31 @@ body {
 .app {
     display: flex;
     justify-content: space-evenly;
-    padding: 20px;
+    padding: 30px;
+    max-height: 100vh;
 }
 .app_left {
     flex: 0.9;
 }
+.image {
+    width: 300px;
+    height: 40px;
+    margin-bottom: 10px;
+}
 .app_header > h1 {
     color: #fc3c3c;
     font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .app_dropdown {
     background-color: white;
 }
+.app_dropdown_select {
+}
+
 .app_header {
     display: flex;
     align-items: center;
@@ -32,6 +45,21 @@ body {
 .app_right {
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.right_data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.app_right_top {
+    flex-basis: 50%;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+.app_right_bottom {
+    flex-basis: 50%;
 }
 .app_graph {
     flex-grow: 1;

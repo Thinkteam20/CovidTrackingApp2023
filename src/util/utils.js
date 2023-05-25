@@ -4,23 +4,11 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import React from "react";
 import numeral from "numeral";
+import { CasesTypeColors } from "./casesTypeColors";
+const casesTypeColors = CasesTypeColors();
 
 //https://dev.to/tsaxena4k/integrating-next-js-with-leaflet-js-mapbox-1351?signin=true
 
-const casesTypeColors = {
-    cases: {
-        hex: "#CC1034",
-        multiplier: 100,
-    },
-    recovered: {
-        hex: "#7dd71d",
-        multiplier: 200,
-    },
-    deaths: {
-        hex: "#fb4443",
-        multiplier: 500,
-    },
-};
 // console.log(typeof casesTypeColors["cases"].hex);
 export const sortData = (data) => {
     const sortedData = [...data];
@@ -38,34 +26,33 @@ export const sortData = (data) => {
 //console.log(country[casesType]); // TEST countries data obj.
 
 export const showDataOnMap = (data, casesType = "cases") =>
-    data.map((country, idx) => (
+    data.map((country) => (
         <Circle
-            key={idx}
+            key={country.country}
             center={[country.countryInfo.lat, country.countryInfo.long]}
-            fillOpacity={0.4}
             color={casesTypeColors[casesType].hex}
             fillColor={casesTypeColors[casesType].hex}
+            fillOpacity={0.4}
             radius={
                 Math.sqrt(country[casesType]) *
                 casesTypeColors[casesType].multiplier
             }
         >
             <Popup>
-                <div className='info-container'></div>
-                <div
-                    className='info-flag'
-                    style={{
-                        backgroundImage: `url(${country.countryInfo.flag})`,
-                    }}
-                >
+                <div className='info-container'>
+                    <div
+                        className='info-flag'
+                        style={{
+                            backgroundImage: `url(${country.countryInfo.flag})`,
+                        }}
+                    ></div>
                     <div className='info-name'>{country.country}</div>
-                    <div className='info-confirm'>
-                        Cases:{numeral(country.cases).format("0,0")}
+                    <div className='info-confirmed'>
+                        Cases: {numeral(country.cases).format("0,0")}
                     </div>
                     <div className='info-recovered'>
-                        Recovered:{numeral(country.recovered).format("0,0")}
+                        Recovered: {numeral(country.recovered).format("0,0")}
                     </div>
-
                     <div className='info-deaths'>
                         Deaths: {numeral(country.deaths).format("0,0")}
                     </div>
@@ -75,4 +62,4 @@ export const showDataOnMap = (data, casesType = "cases") =>
     ));
 
 export const prettyPrintStat = (stat) =>
-    stat ? `+${numeral(stat).format("0,0a")}` : "+0";
+    stat ? `${numeral(stat).format("0.0a")}` : "+0";

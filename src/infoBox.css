@@ -14,6 +14,9 @@
 .infoBox__cases--green {
     color: lightgreen !important;
 }
+.infoBox__cases--grey {
+    color: darkgray !important;
+}
 .infoBox_cases {
     color: #cc1034;
     font-weight: 600;

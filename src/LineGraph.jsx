@@ -14,15 +14,15 @@ import {
 import { CasesTypeColors } from "./util/casesTypeColors";
 import { Typography } from "@material-ui/core";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
+// ChartJS.register(
+//     CategoryScale,
+//     LinearScale,
+//     PointElement,
+//     LineElement,
+//     Title,
+//     Tooltip,
+//     Legend
+// );
 
 const casesTypeColors = CasesTypeColors();
 const options = {
@@ -45,16 +45,16 @@ const options = {
         },
     },
     scales: {
-        x: [
+        xAxes: [
             {
                 type: "time",
                 time: {
-                    format: "MM/DD.YY",
-                    // tooltipFormat: "ll",
+                    parser: "MM/DD/YY",
+                    tooltipFormat: "ll",
                 },
             },
         ],
-        y: {
+        yAxis: {
             ticks: {
                 // Include a dollar sign in the ticks
                 callback: function (value, index, ticks) {

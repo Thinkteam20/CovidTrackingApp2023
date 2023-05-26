@@ -8,43 +8,29 @@ export default function InfoBox({
     cases,
     total,
     isRed,
+    isGreen,
+    isBlack,
+    color,
     active,
     todayData,
+    casesType,
+    setCasesType,
     ...props
 }) {
-    // const changeColors = (cases) => {
-    //     switch (cases) {
-    //         case "recovered":
-    //             return "";
-
-    //         case "deaths":
-    //             // code block
-    //             break;
-    //         default:
-    //             "infoBox--red";
-    //     }
-    // };
-
     return (
         <Card
-            onClick={props.onClick}
+            onClick={(e) => setCasesType(casesType)}
             className={`infoBox ${active && `infoBox--selected`} ${
                 isRed && `infoBox--red`
-            }`}
+            } ${isGreen && `infoBox--green`}  ${isBlack && `infoBox--black`}`}
         >
             <CardContent>
                 <Typography className='infoBox_title'>{title}</Typography>
-                <h2
-                    className={`infoBox_cases ${
-                        !isRed && "infoBox__cases--green"
-                    }`}
-                >
-                    {cases}
-                </h2>
-                <Typography color='textSecondary'>{total}Total</Typography>
                 <Typography variant='h5'>
                     {prettyPrintStat(todayData)} Today
                 </Typography>
+
+                <Typography color='textSecondary'>{total}Total</Typography>
             </CardContent>
         </Card>
     );

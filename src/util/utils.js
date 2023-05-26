@@ -4,12 +4,11 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import React from "react";
 import numeral from "numeral";
-import { CasesTypeColors } from "./casesTypeColors";
+import { CasesTypeColors } from "../util/casesTypeColors";
 const casesTypeColors = CasesTypeColors();
 
 //https://dev.to/tsaxena4k/integrating-next-js-with-leaflet-js-mapbox-1351?signin=true
 
-// console.log(typeof casesTypeColors["cases"].hex);
 export const sortData = (data) => {
     const sortedData = [...data];
     sortedData.sort((a, b) => {
@@ -21,9 +20,6 @@ export const sortData = (data) => {
     });
     return sortedData;
 };
-
-// data = countries prop from the map.
-//console.log(country[casesType]); // TEST countries data obj.
 
 export const showDataOnMap = (data, casesType = "cases") =>
     data.map((country) => (

@@ -4,7 +4,6 @@ export const CasesTypeColors = () => {
             hex: "#CC1034",
             rgb: "rgb(204, 16, 52)",
             half_op: "rgba(204, 16, 52, 0.5)",
-
             multiplier: 180,
         },
         recovered: {

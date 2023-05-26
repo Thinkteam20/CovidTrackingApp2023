@@ -18,12 +18,13 @@ import Map from "./Map";
 import Table from "./Table";
 import coronaImage from "./assets/image/Covid.png";
 import LineGraph from "./LineGraph";
+import { CasesTypeColors } from "./util/casesTypeColors";
 
 //https://react-leaflet.js.org/docs/start-installation/
 //https://yudhajitadhikary.medium.com/building-covid-19-tracker-using-react-dd6173d610d
 
 function App() {
-    const [loading, setLoading] = useState(false);
+    const casesTypeColors = CasesTypeColors();
     const [countries, setCountries] = useState([]);
     const [countrySelect, setCountrySelect] = useState("worldwide");
     const [country, setCountry] = useState([]);
@@ -39,6 +40,10 @@ function App() {
     const all = "Worldwide";
     const BASE_COVID_URL = "https://disease.sh/v3/covid-19";
     const now = new Date().toLocaleString();
+
+    function refreshPage() {
+        window.location.reload(false);
+    }
 
     useEffect(() => {
         axios
@@ -59,38 +64,44 @@ function App() {
 
     useEffect(() => {
         const getCountriesData = async () => {
-            setLoading(true);
             await axios
                 .get(`${BASE_COVID_URL}/countries`)
                 .then((res) => res.data)
                 .then((data) => {
-                    const countries = data.map((country) => ({
-                        name: country.country,
-                        value: country.countryInfo.iso2,
-                    }));
+                    setCountries([
+                        ...data.map((country) => ({
+                            name: country.country,
+                            cases: country.cases,
+                        })),
+                    ]);
+
                     const sortedData = sortData(data);
                     setTableData(sortedData);
                     setMapCountries(data);
-                    setCountries(countries);
                 });
-            setLoading(false);
         };
         getCountriesData();
     }, []);
 
-    const onCountryChange = async (event) => {
-        const countryCode = event.target.value;
-        console.log(countryCode);
-        setCountry(countryCode);
-        const url =
-            countryCode === "worldwide"
-                ? `${BASE_COVID_URL}/all`
-                : `${BASE_COVID_URL}/countries/${countryCode}`;
-        await axios(url) //
-            .then((res) => res.data) //
+    const onCountryChange = async (e) => {
+        const clickedCountry = e.target.value;
+        const allParam = clickedCountry === all;
+        await fetch(
+            allParam
+                ? "https://disease.sh/v3/covid-19/all"
+                : `https://disease.sh/v3/covid-19/countries/${clickedCountry}`
+        )
+            .then((response) => response.json())
             .then((data) => {
-                setCountry(countryCode);
-                setCountryInfo(data);
+                setCountry({
+                    name: allParam ? all : data.country,
+                    todayCases: data.todayCases,
+                    todayRecovered: data.todayRecovered,
+                    todayDeaths: data.todayDeaths,
+                    cases: data.cases,
+                    recovered: data.recovered,
+                    deaths: data.deaths,
+                });
                 setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
                 setMapZoom(4);
             });
@@ -109,7 +120,11 @@ function App() {
                                 <Alert severity='info'>
                                     Last Updated at {now}
                                 </Alert>
-                                <Button variant='contained' color='success'>
+                                <Button
+                                    variant='contained'
+                                    color='success'
+                                    onClick={refreshPage}
+                                >
                                     REFRESH
                                 </Button>
                             </Box>
@@ -147,39 +162,39 @@ function App() {
                 </Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
-                        <Box
-                            display='flex'
-                            justifyContent='center'
-                            alignItems='center'
-                            sx={{ height: "100%", width: "100%" }}
-                        >
-                            <InfoBox
-                                active={casesType === "cases"}
-                                onClick={(e) => setCasesType("cases")}
-                                title='Coronavirus cases'
-                                total={prettyPrintStat(country.cases)}
-                                todayData={country.todayCases}
-                            ></InfoBox>
-                        </Box>
+                        <InfoBox
+                            active={casesType === "cases"}
+                            setCasesType={setCasesType}
+                            casesType={"cases"}
+                            color={casesTypeColors["cases"].hex}
+                            title='Coronavirus cases'
+                            total={prettyPrintStat(country.cases)}
+                            todayData={country.todayCases}
+                            isRed={true}
+                        ></InfoBox>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         {" "}
                         <InfoBox
                             active={casesType === "recovered"}
-                            onClick={(e) => setCasesType("recovered")}
+                            setCasesType={setCasesType}
+                            casesType={"recovered"}
                             title='recovered'
                             total={prettyPrintStat(country.recovered)}
                             todayData={country.todayRecovered}
+                            isGreen={true}
                         ></InfoBox>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         {" "}
                         <InfoBox
                             active={casesType === "deaths"}
-                            onClick={(e) => setCasesType("deaths")}
+                            setCasesType={setCasesType}
+                            casesType={"deaths"}
                             title='Deaths'
                             total={prettyPrintStat(country.deaths)}
                             todayData={country.todayDeaths}
+                            isBlack={true}
                         ></InfoBox>
                     </Grid>
                 </Grid>
@@ -189,7 +204,6 @@ function App() {
                 {/*Graph*/}
 
                 <Map
-                    loading={loading}
                     casesType={casesType}
                     countries={mapCountries}
                     center={mapCenter}

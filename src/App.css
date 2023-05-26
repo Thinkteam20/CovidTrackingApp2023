@@ -55,7 +55,7 @@ body {
 }
 .app_right_top {
     flex-basis: 50%;
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: scroll;
 }
 .app_right_bottom {

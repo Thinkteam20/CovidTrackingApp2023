@@ -85,6 +85,7 @@ function App() {
 
     const onCountryChange = async (e) => {
         const clickedCountry = e.target.value;
+        console.log(clickedCountry);
         const allParam = clickedCountry === all;
         await fetch(
             allParam
@@ -102,7 +103,7 @@ function App() {
                     recovered: data.recovered,
                     deaths: data.deaths,
                 });
-                setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+                setMapCenter(["1", "1"]);
                 setMapZoom(4);
             });
     };
@@ -148,8 +149,11 @@ function App() {
                                         </MenuItem>
                                         {countries.map((country, idx) => (
                                             <MenuItem
-                                                value={country.value}
-                                                key={idx}
+                                                key={country.name}
+                                                value={country.name}
+                                                onClick={onCountryChange}
+                                                color='#1D4044'
+                                                fontWeight='400'
                                             >
                                                 {country.name}
                                             </MenuItem>
@@ -163,6 +167,7 @@ function App() {
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
                         <InfoBox
+                            country={country}
                             active={casesType === "cases"}
                             setCasesType={setCasesType}
                             casesType={"cases"}

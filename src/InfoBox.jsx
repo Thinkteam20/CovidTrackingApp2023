@@ -15,8 +15,10 @@ export default function InfoBox({
     todayData,
     casesType,
     setCasesType,
+    country,
     ...props
 }) {
+    console.log(country);
     return (
         <Card
             onClick={(e) => setCasesType(casesType)}

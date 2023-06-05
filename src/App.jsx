@@ -30,10 +30,7 @@ function App() {
     const [country, setCountry] = useState([]);
     const [countryInfo, setCountryInfo] = useState({});
     const [tableData, setTableData] = useState([]);
-    const [mapCenter, setMapCenter] = useState({
-        lat: -20.2744,
-        lng: 153.7751,
-    });
+    const [mapCenter, setMapCenter] = useState([-20.2744, 153.7751]);
     const [mapZoom, setMapZoom] = useState(3);
     const [mapCountries, setMapCountries] = useState([]);
     const [casesType, setCasesType] = useState("cases");
@@ -85,8 +82,7 @@ function App() {
 
     const onCountryChange = async (e) => {
         const clickedCountry = e.target.value;
-        console.log(clickedCountry);
-        const allParam = clickedCountry === all;
+        const allParam = clickedCountry === "worldwide";
         await fetch(
             allParam
                 ? "https://disease.sh/v3/covid-19/all"
@@ -103,7 +99,7 @@ function App() {
                     recovered: data.recovered,
                     deaths: data.deaths,
                 });
-                setMapCenter(["1", "1"]);
+                setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
                 setMapZoom(4);
             });
     };
@@ -151,7 +147,6 @@ function App() {
                                             <MenuItem
                                                 key={country.name}
                                                 value={country.name}
-                                                onClick={onCountryChange}
                                                 color='#1D4044'
                                                 fontWeight='400'
                                             >

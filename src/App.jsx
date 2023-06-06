@@ -27,7 +27,7 @@ function App() {
     const casesTypeColors = CasesTypeColors();
     const [countries, setCountries] = useState([]);
     const [countrySelect, setCountrySelect] = useState("worldwide");
-    const [country, setCountry] = useState([]);
+    const [country, setCountry] = useState({});
     const [countryInfo, setCountryInfo] = useState({});
     const [tableData, setTableData] = useState([]);
     const [mapCenter, setMapCenter] = useState([-20.2744, 153.7751]);
@@ -99,6 +99,7 @@ function App() {
                     recovered: data.recovered,
                     deaths: data.deaths,
                 });
+                setCountrySelect(data.country);
                 setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
                 setMapZoom(4);
             });
@@ -138,14 +139,12 @@ function App() {
                                         variant='outlined'
                                         onChange={onCountryChange}
                                         value={countrySelect}
-                                        // defaultValue={country}
                                     >
                                         <MenuItem value='worldwide'>
                                             Worldwide
                                         </MenuItem>
                                         {countries.map((country, idx) => (
                                             <MenuItem
-                                                key={country.name}
                                                 value={country.name}
                                                 color='#1D4044'
                                                 fontWeight='400'
@@ -204,8 +203,9 @@ function App() {
                 {/*Graph*/}
 
                 <Map
-                    casesType={casesType}
+                    country={country}
                     countries={mapCountries}
+                    casesType={casesType}
                     center={mapCenter}
                     zoom={mapZoom}
                 />

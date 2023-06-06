@@ -7,7 +7,6 @@ import "leaflet-defaulticon-compatibility";
 import { showDataOnMap } from "./util/utils.js";
 
 export default function Map({ countries, casesType, center, zoom, country }) {
-    console.log(country);
     return (
         <div className='map'>
             <MapContainer center={center} zoom={zoom} scrollWheelZoom={false}>

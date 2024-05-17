@@ -7,16 +7,17 @@ body {
 .app {
     display: flex;
     justify-content: space-evenly;
-    padding: 30px;
-    max-height: 100%;
+    max-height: 100vh;
+    padding-top: 12px;
 }
 .app_left {
     flex: 0.9;
 }
 .image {
-    width: 300px;
-    height: 40px;
+    width: 150px;
+    height: 100px;
     margin-bottom: 10px;
+    object-fit: contain;
 }
 .app_header > h1 {
     color: #fc3c3c;
@@ -29,13 +30,10 @@ body {
 .app_dropdown {
     background-color: white;
 }
-.app_dropdown_select {
-}
 
 .app_header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
     justify-content: space-between;
 }
 .app_stats {
@@ -72,7 +70,7 @@ body {
     flex-direction: column;
     flex-grow: 1;
 }
-@media (max-width: 990px) {
+@media (max-width: 760px) {
     .app {
         flex-direction: column;
     }

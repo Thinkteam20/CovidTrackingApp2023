@@ -41,7 +41,7 @@ function App() {
     function refreshPage() {
         window.location.reload(false);
     }
-
+    console.log(country.todayDeaths)
     useEffect(() => {
         axios
             .get(`${BASE_COVID_URL}/all`) //
@@ -108,14 +108,14 @@ function App() {
     return (
         <div className='app'>
             <div className='app_left'>
-                <Box sx={{ mb: 4, p: 1 }}>
-                    <Grid container>
+                <div style={{ marginBottom: '16px', padding: '8px' }}>
+                    <Grid container style={{display: 'flex', justifyContent:"center", alignItems:'center'}}>
                         <Grid item xs={12} md={5}>
                             <img src={coronaImage} alt='' className='image' />
                         </Grid>
                         <Grid item xs={12} md={5}>
-                            <Box sx={{ display: "flex" }}>
-                                <Alert severity='info'>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Alert severity='info' style={{ marginRight: '8px' }}>
                                     Last Updated at {now}
                                 </Alert>
                                 <Button
@@ -125,16 +125,18 @@ function App() {
                                 >
                                     REFRESH
                                 </Button>
-                            </Box>
+                            </div>
                         </Grid>
                         <Grid item xs={12} md={2}>
-                            <Box
-                                display='flex'
-                                justifyContent='center'
-                                alignItems='center'
-                                sx={{ height: "100%" }}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100%'
+                                }}
                             >
-                                <FormControl className='app_dropdown'>
+                                <FormControl className='app_dropdown' style={{ minWidth: '120px' }}>
                                     <Select
                                         variant='outlined'
                                         onChange={onCountryChange}
@@ -145,19 +147,19 @@ function App() {
                                         </MenuItem>
                                         {countries.map((country, idx) => (
                                             <MenuItem
+                                                key={idx} // Added key to avoid React warning
                                                 value={country.name}
-                                                color='#1D4044'
-                                                fontWeight='400'
+                                                style={{ color: '#1D4044', fontWeight: 400 }}
                                             >
                                                 {country.name}
                                             </MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
-                            </Box>
+                            </div>
                         </Grid>
                     </Grid>
-                </Box>
+                </div>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
                         <InfoBox

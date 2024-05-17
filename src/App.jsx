@@ -1,24 +1,23 @@
-import "./App.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import {
     Card,
-    Box,
-    Grid,
-    FormControl,
-    Select,
-    MenuItem,
     CardContent,
-    Typography,
+    FormControl,
+    Grid,
+    MenuItem,
+    Select,
+    Typography
 } from "@material-ui/core";
-import { Button, Alert, Container } from "@mui/material";
+import { Alert, Button } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import "./App.css";
 import InfoBox from "./InfoBox";
-import { prettyPrintStat, sortData } from "./util/utils";
+import LineGraph from "./LineGraph";
 import Map from "./Map";
 import Table from "./Table";
 import coronaImage from "./assets/image/Covid.png";
-import LineGraph from "./LineGraph";
 import { CasesTypeColors } from "./util/casesTypeColors";
+import { prettyPrintStat, sortData } from "./util/utils";
 
 //https://react-leaflet.js.org/docs/start-installation/
 //https://yudhajitadhikary.medium.com/building-covid-19-tracker-using-react-dd6173d610d
@@ -28,7 +27,6 @@ function App() {
     const [countries, setCountries] = useState([]);
     const [countrySelect, setCountrySelect] = useState("worldwide");
     const [country, setCountry] = useState({});
-    const [countryInfo, setCountryInfo] = useState({});
     const [tableData, setTableData] = useState([]);
     const [mapCenter, setMapCenter] = useState([-20.2744, 153.7751]);
     const [mapZoom, setMapZoom] = useState(3);
@@ -109,7 +107,7 @@ function App() {
         <div className='app'>
             <div className='app_left'>
                 <div style={{ marginBottom: '16px', padding: '8px' }}>
-                    <Grid container style={{display: 'flex', justifyContent:"center", alignItems:'center'}}>
+                    <Grid container style={{ display: 'flex', justifyContent: "center", alignItems: 'center' }}>
                         <Grid item xs={12} md={5}>
                             <img src={coronaImage} alt='' className='image' />
                         </Grid>

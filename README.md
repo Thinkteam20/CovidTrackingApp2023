@@ -1,5 +1,7 @@
 # Covid Tracking App
 
+🔗 Live Link: https://covid-tracking-app2023.vercel.app/
+
 <a href="https://ibb.co/fFCXL6D"><img src="https://i.ibb.co/8sjmtvY/Screenshot-2024-05-17-at-13-56-14.png" alt="Screenshot-2024-05-17-at-13-56-14" border="0"></a>
 # 🦠 COVID-19 Tracker Dashboard
 
